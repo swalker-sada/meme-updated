@@ -1,5 +1,6 @@
 body {
-    background: #055388;
+    /* background: #055388; */
+    background: #28343b;
     text-align: center;
 }
 
@@ -63,7 +64,8 @@ body {
     position: absolute;
     width: 50%;
     left: 810px;
-    top: 380px
+    top: 380px;
+    padding-top: 20px;
 }
 
 .meme-gen-modal svg {
