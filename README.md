@@ -1,6 +1,9 @@
 # Meme Generator
-
-
+    - App is static. 
+    - Some features include being able to download a chosen meme directly to your machine.
+    - Makes Api call to retrieve the memes displayed on the home page, as seen below.
+  
+    
 ## Common NPM commands in Yarn
 
 |NPM Command | Yarn Command| Description (_wherever necessary_)|
