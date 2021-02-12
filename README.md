@@ -2,6 +2,8 @@
     - App is static. 
     - Some features include being able to download a chosen meme directly to your machine.
     - Makes Api call to retrieve the memes displayed on the home page, as seen below.
+    - Clicking on the button will take you to the second page where you can add text or download.
+![alt text](https://user-images.githubusercontent.com/75445317/107823816-4566ee80-6d35-11eb-9577-732416261c2b.png)
 ![alt text](https://user-images.githubusercontent.com/75445317/107823816-4566ee80-6d35-11eb-9577-732416261c2b.png)
     
 ## Common NPM commands in Yarn
