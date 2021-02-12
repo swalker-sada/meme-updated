@@ -4,7 +4,7 @@
     - Makes Api call to retrieve the memes displayed on the home page, as seen below.
     - Clicking on the button will take you to the second page where you can add text or download.
 ![alt text](https://user-images.githubusercontent.com/75445317/107823816-4566ee80-6d35-11eb-9577-732416261c2b.png)
-![alt text](https://user-images.githubusercontent.com/75445317/107823816-4566ee80-6d35-11eb-9577-732416261c2b.png)
+![alt text](https://user-images.githubusercontent.com/75445317/107824819-f3bf6380-6d36-11eb-8264-6f459fd12d36.png)
     
 ## Common NPM commands in Yarn
 
