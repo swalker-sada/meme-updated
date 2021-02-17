@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import Gallery from "./Gallery";
 import TempGen from "./TempGen";
+import utils from './utils/utils';
+import {getMemes} from './utils/api';
 
 export default class App extends Component {
   state = {
     images: [],
+    memes: [],
     selected: null,
     selectedImg: [],
   };
@@ -34,7 +37,26 @@ export default class App extends Component {
     }
   };
 
+  getSessionId() {
+    // Check if a session id query parameter exists
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('session-id')) {
+      return params.get('session-id');
+    }
+
+    // Check if a session id is stored to local storage
+    if (utils.store('session-id')) {
+      return utils.store('session-id');
+    }
+
+    // Otherwise, generate a new session id
+    const sid = utils.uuid();
+    utils.store('session-id', sid);
+    return sid;
+  }
+
   render() {
+    
     return <div>
       {this.toggleComponent()}
     </div>;
@@ -45,10 +67,17 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    fetch("https://api.imgflip.com/get_memes")
-      .then((r) => r.json())
-      .then((images) => {
-        this.setState({ images: images.data.memes.filter((i) => i.box_count === 2) });
-      });
+    const sessionId = this.getSessionId();
+    getMemes(sessionId)
+      .then(data => {
+            this.setState({ images: data.rows });
+        });
+    //fetch("https://api.imgflip.com/get_memes")
+    //  .then((r) => r.json())
+    //  .then((images) => {
+    //    console.log(images);
+    //    this.setState({ images: images.data.memes.filter((i) => i.box_count === 2) });
+    //  });
   }
+  
 }
