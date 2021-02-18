@@ -16,7 +16,7 @@ module.exports = async function getOrCreateAuthToken() {
     return cachedToken;
   }
   try {
-    console.log(ENDPOINT)
+    //console.log(ENDPOINT)
     const response = await fetch(`${ENDPOINT}/auth`, {
       method: 'POST',
       headers: {
