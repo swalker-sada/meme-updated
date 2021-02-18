@@ -70,13 +70,13 @@ export default class App extends Component {
     const sessionId = this.getSessionId();
     getMemes(sessionId)
       .then(data => {
-            this.setState({ images: data.rows });
+            this.setState({ images: data.rows.filter((i) => i.box_count === 2) });
         });
     //fetch("https://api.imgflip.com/get_memes")
     //  .then((r) => r.json())
     //  .then((images) => {
     //    console.log(images);
-    //    this.setState({ images: images.data.memes.filter((i) => i.box_count === 2) });
+    //    this.setState({ images2: images.data.memes.filter((i) => i.box_count === 2) });
     //  });
   }
   

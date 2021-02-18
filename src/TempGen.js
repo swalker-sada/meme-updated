@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import "./Generator.css";
 import * as svg from "save-svg-as-png";
+import utils from './utils/utils';
+import {saveMemes} from './utils/api';
 
 const initialState = {
     toptext: "",
@@ -20,6 +22,24 @@ class TempGen extends Component {
             ...initialState
         };
     }
+
+    getSessionId() {
+        // Check if a session id query parameter exists
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('session-id')) {
+          return params.get('session-id');
+        }
+
+        // Check if a session id is stored to local storage
+        if (utils.store('session-id')) {
+          return utils.store('session-id');
+        }
+
+        // Otherwise, generate a new session id
+        const sid = utils.uuid();
+        utils.store('session-id', sid);
+        return sid;
+    };
 
     getStateObj = (e, type) => {
         let rect = this.imageRef.getBoundingClientRect();
@@ -85,10 +105,23 @@ class TempGen extends Component {
     };
 
     saveMeme = () => {
+
         let name = document.getElementById("memename").value
         name.length > 0 ?
             svg.saveSvgAsPng(document.getElementById("svg_ref"), `${name}.png`) :
             svg.saveSvgAsPng(document.getElementById("svg_ref"), "meme.png")
+
+        const sessionId = this.getSessionId();
+        const meme = this.props.meme;
+        meme['sessionid'] = sessionId;
+        meme['memename'] = document.getElementById("memename").value;
+        meme['toptext'] = document.getElementById("toptext").value;
+        meme['bottomtext'] = document.getElementById("bottomtext").value;
+
+        saveMemes(meme,sessionId)
+          .then(data => {
+                console.log(data);
+            });
     };
 
     resetBoxes = () => {
