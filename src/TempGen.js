@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import "./Generator.css";
+import Image from "./Image2";
+import "./ImageList.css"
 import * as svg from "save-svg-as-png";
 import utils from './utils/utils';
 import {saveMemes} from './utils/api';
+import {getMemesSaved} from './utils/api';
 
 const initialState = {
     toptext: "",
@@ -13,6 +16,7 @@ const initialState = {
     topY: "10%",
     bottomX: "50%",
     bottomY: "90%",
+    saved_images: []
 };
 
 class TempGen extends Component {
@@ -110,18 +114,24 @@ class TempGen extends Component {
         name.length > 0 ?
             svg.saveSvgAsPng(document.getElementById("svg_ref"), `${name}.png`) :
             svg.saveSvgAsPng(document.getElementById("svg_ref"), "meme.png")
+        
+        svg.svgAsPngUri(document.getElementById("svg_ref")).then(image_source => {
+            //console.log(image_source);
+            const sessionId = this.getSessionId();
+            const meme = this.props.meme;
+            meme['sessionid'] = sessionId;
+            meme['memename'] = document.getElementById("memename").value;
+            meme['toptext'] = document.getElementById("toptext").value;
+            meme['bottomtext'] = document.getElementById("bottomtext").value;
+            meme['image_source'] = image_source;
 
-        const sessionId = this.getSessionId();
-        const meme = this.props.meme;
-        meme['sessionid'] = sessionId;
-        meme['memename'] = document.getElementById("memename").value;
-        meme['toptext'] = document.getElementById("toptext").value;
-        meme['bottomtext'] = document.getElementById("bottomtext").value;
+            saveMemes(meme,sessionId)
+              .then(data => {
+                    //console.log(data);
+                });
 
-        saveMemes(meme,sessionId)
-          .then(data => {
-                console.log(data);
-            });
+        });
+        
     };
 
     resetBoxes = () => {
@@ -148,8 +158,23 @@ class TempGen extends Component {
         }
     }
 
+    componentDidMount() {
+        const imageId = this.props.meme.id;
+        //console.log(imageId);
+        //const query = [];
+        //    query['columnNames'] = ["image_source"];
+        //    query['filters'] = [{"value":["161865971"],"columnName":"image_source","operator":"eq"}];
+        // i had some issues building the object so I just ended up using the original test string
+        const query = '{ "columnNames": ["uuid","id","name","image_source"], "filters": [{"value": ["' + imageId + '"],"columnName": "id","operator": "eq"}]}';
+        getMemesSaved(query)
+          .then(data => {
+                this.setState({ saved_images: data.rows });
+            });
+    }
+
     render() {
         const image = this.props.meme;
+        
         var wrh = image.width / image.height;
         var newWidth = 500;
         var newHeight = newWidth / wrh;
@@ -241,8 +266,19 @@ class TempGen extends Component {
                             <button onClick={this.resetBoxes} className="btn btn-primary">Reset</button>
                             <button onClick={() => this.props.toggleSelected()} className="btn btn-primary">Back to Gallery</button>
                         </div>
+
                     </div>
-                </div >
+                </div>
+                <div className="image-list">
+                  {this.state.saved_images.map((image) => {
+                    return (
+                      <Image
+                        key={image.uuid}
+                        image={image}
+                      />
+                    );
+                  })}
+                </div>
             </div>
         );
     }
