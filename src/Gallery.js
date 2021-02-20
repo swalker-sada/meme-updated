@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import Image from "./Image";
 import "./ImageList.css"
-import logo from './images/canada.png';
 
+  let logo;
+    import(`./images/${process.env.REACT_APP_LOGO}`).then((module) => {
+      logo = module.default;
+  });
 
 export default class Gallery extends Component {
   render() {
@@ -12,8 +15,7 @@ export default class Gallery extends Component {
           MEME GENERATOR 
            </div>
            <img className="icon" src={logo} alt="Logo" style={{position: 'absolute', top: 10, right: 15, width: '7%', height: 100}}/>
-        
-        
+
        
 
         <div>
