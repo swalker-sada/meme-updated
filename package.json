@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.1.2",
     "cross-fetch": "^3.0.6",
     "env-variable": "^0.0.6",
+    "firebase": "^8.2.9",
     "ngx-virtual-scroller": "^4.0.3",
     "node-uuid": "^1.4.8",
     "react": "^16.13.1",
@@ -17,7 +18,8 @@
     "react-scale-text": "^1.2.2",
     "react-scripts": "^3.4.4",
     "reactstrap": "^8.5.1",
-    "save-svg-as-png": "^1.4.17"
+    "save-svg-as-png": "^1.4.17",
+    "yarn": "^1.22.10"
   },
   "scripts": {
     "start": "react-scripts start",

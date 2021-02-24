@@ -1,14 +1,34 @@
 import React, { Component } from "react";
 import Image from "./Image";
-import "./ImageList.css"
+import "./ImageList.css";
+import logo from './images/gcp.png';
 
-  let logo;
-    import(`./images/${process.env.REACT_APP_LOGO}`).then((module) => {
-      logo = module.default;
-  });
 
 export default class Gallery extends Component {
+
+  state = {
+    showMemesWithHighLikes: false,  
+  }
+  
+
+  getMemesWithHigherLikes = () => {
+    let memesWithLikes = [];
+    const { memeLikesList, images} = this.props;
+    
+    for (let i = 0; i < memeLikesList.length; i++) {
+      if (memeLikesList[i].likes >= 10) {
+        for (let j = 0; j < images?.length; j++) {
+          if (images[j].id === memeLikesList[i].memeId) {
+            memesWithLikes.push(images[j]);
+          }
+        }
+      }
+    }
+    return memesWithLikes;
+  }
+
   render() {
+    const memesList = !this.state?.showMemesWithHighLikes ? this.props.images : this.getMemesWithHigherLikes();
     return (
       <div>
         <div className="h1">
@@ -20,12 +40,22 @@ export default class Gallery extends Component {
 
         <div>
           <button className="btn-gallery" onClick={() => this.props.handleRandom()}>Gimme a Random Meme</button>
+          <button
+            className="btn-gallery"
+            style={{ marginLeft: '1rem' }}
+            onClick={() => this.setState({ showMemesWithHighLikes: !this.state?.showMemesWithHighLikes })}
+          >
+            {!this.state?.showMemesWithHighLikes ? 'Top Liked Memes' : 'Show All Memes'}
+            
+          </button>
+         
           
         
         </div>
 
         <div className="image-list">
-          {this.props.images.map((image) => {
+          
+          {memesList?.map((image) => {
             return (
               <Image
                 key={image.id}

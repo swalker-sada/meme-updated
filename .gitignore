@@ -18,8 +18,8 @@
 .env.production.local
 
 # srm
-.env
-.env.development
+#.env
+#.env.development
 memegen.postman*
 
 npm-debug.log*

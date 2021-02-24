@@ -4,8 +4,16 @@ import Image from "./Image2";
 import "./ImageList.css"
 import * as svg from "save-svg-as-png";
 import utils from './utils/utils';
-import {saveMemes} from './utils/api';
-import {getMemesSaved} from './utils/api';
+import {saveMemes, getMemesSaved} from './utils/api';
+import MemeLikesService from './utils/tutorial.service';
+
+
+
+// {"authToken":"b53e5f7b-b696-4d3e-9f17-e18934278e32"}
+//export ASTRA_AUTHORIZATION_TOKEN=b53e5f7b-b696-4d3e-9f17-e18934278e32
+//export ASTRA_AUTHORIZATION_TOKEN=b53e5f7b-b696-4d3e-9f17-e18934278e32
+
+//{"authToken":"f9f2be4b-4272-4955-ae3a-d963ab932e75"}
 
 const initialState = {
     toptext: "",
@@ -16,16 +24,20 @@ const initialState = {
     topY: "10%",
     bottomX: "50%",
     bottomY: "90%",
-    saved_images: []
+    saved_images: [],
+    
 };
 
 class TempGen extends Component {
     constructor() {
         super();
         this.state = {
-            ...initialState
+            ...initialState,
+           
         };
     }
+
+   
 
     getSessionId() {
         // Check if a session id query parameter exists
@@ -172,10 +184,36 @@ class TempGen extends Component {
             });
     }
 
+    memeLikeHandler = () => {
+        const noOfLikes = this.props.memeInfo?.likes ? +this.props.memeInfo?.likes + 1 : 1
+        if (!this.props.memeInfo) {
+            const data = { memeId: this.props?.meme?.id, likes: noOfLikes }
+            MemeLikesService.create(data)
+                .then(() => {
+                    this.setState({
+                        submitted: true,
+                    });
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+        } else {
+            MemeLikesService.update(this.props.memeInfo?.key, { likes: noOfLikes })
+                .then(() => {
+                    this.setState({
+                        updated: true,
+                    });
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+        }
+    }
+
     render() {
         const image = this.props.meme;
         
-        var wrh = image.width / image.height;
+        var wrh = image?.width / image?.height;
         var newWidth = 500;
         var newHeight = newWidth / wrh;
 
@@ -261,10 +299,15 @@ class TempGen extends Component {
                                 placeholder="Save meme as..."
                             />
                         </div>
-                        <div className="buttons">
-                            <button onClick={this.saveMeme} className="btn btn-primary">Download Meme :D</button>
+                        <div className="buttons">{console.log(this.props)}
+                            <button onClick={this.saveMeme} className="btn btn-primary">Download Meme</button>
                             <button onClick={this.resetBoxes} className="btn btn-primary">Reset</button>
                             <button onClick={() => this.props.toggleSelected()} className="btn btn-primary">Back to Gallery</button>
+                            <button onClick={this.memeLikeHandler} className="btn btn-primary">
+                                {`LIKE = ${this.props?.memeInfo?.likes ? this.props?.memeInfo?.likes : 0}`}
+                            </button>
+                             {/* <button className="btn-gallery" onClick={this.handleClick}>Like = {this.state.count}</button> */}
+
                         </div>
 
                     </div>
