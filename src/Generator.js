@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./Generator.css"
+import "./styling/Generator.css";
 
 class Canvas extends React.Component {
   componentDidMount() {

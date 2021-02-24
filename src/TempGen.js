@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import "./Generator.css";
+import "./styling/Generator.css";
 import Image from "./Image2";
-import "./ImageList.css"
+import "./styling/ImageList.css"
 import * as svg from "save-svg-as-png";
 import utils from './utils/utils';
 import {saveMemes, getMemesSaved} from './utils/api';
