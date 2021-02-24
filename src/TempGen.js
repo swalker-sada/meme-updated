@@ -177,9 +177,15 @@ class TempGen extends Component {
         //    query['columnNames'] = ["image_source"];
         //    query['filters'] = [{"value":["161865971"],"columnName":"image_source","operator":"eq"}];
         // i had some issues building the object so I just ended up using the original test string
-        const query = '{ "columnNames": ["uuid","id","name","image_source"], "filters": [{"value": ["' + imageId + '"],"columnName": "id","operator": "eq"}]}';
+        const query = '{ "columnNames": ["uuid","id","name","toptext","bottomtext","image_source"], "filters": [{"value": ["' + imageId + '"],"columnName": "id","operator": "eq"}]}';
         getMemesSaved(query)
           .then(data => {
+                var meme = data.rows.length === 1 ? data.rows[0] : null;
+                if (meme !== null) { 
+                    this.props.meme.saved = meme;
+                    this.setState({ bottomtext : meme.bottomtext});
+                    this.setState({toptext: meme.toptext});
+                }
                 this.setState({ saved_images: data.rows });
             });
     }
