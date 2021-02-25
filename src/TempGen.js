@@ -81,11 +81,24 @@ class TempGen extends Component {
     };
 
     changeText = (event) => {
-        this.setState({
+        /* this.setState({
             [event.currentTarget.id]: event.currentTarget.value,
         });
         let type = event.currentTarget.name
+        
         this.resizeText(type)
+        */
+        this.props.meme['toptext'] = document.getElementById("toptext").value;
+        this.props.meme['bottomtext'] = document.getElementById("bottomtext").value;
+        this.props.meme['url'] = 
+                'https://api.memegen.link/images/' +
+                this.props.meme['id'] + 
+                '/' +
+                this.props.meme['toptext'] + 
+                '/' + 
+                this.props.meme['bottomtext'] +
+                '.png';
+        this.setState({});
     };
 
     handleMouseDown = (e, type) => {
@@ -128,7 +141,7 @@ class TempGen extends Component {
             svg.saveSvgAsPng(document.getElementById("svg_ref"), "meme.png")
         
         svg.svgAsPngUri(document.getElementById("svg_ref")).then(image_source => {
-            //console.log(image_source);
+            console.log(image_source);
             const sessionId = this.getSessionId();
             const meme = this.props.meme;
             meme['sessionid'] = sessionId;
@@ -231,7 +244,7 @@ class TempGen extends Component {
             stroke: "#000",
             userSelect: "none"
         };
-
+        console.log('meme',this.props.meme);
         return (
             <div>
                 <div className="h1" onClick={() => this.props.toggleSelected()}>
@@ -240,44 +253,43 @@ class TempGen extends Component {
                 <div className="main-content">
                     <div className="meme-gen-modal">
                         <svg
-                            id="svg_ref"
-                            ref={(el) => { this.svgRef = el; }}
-                            height={newHeight}
-                            width={newWidth}
-                        >
-                            <image
-                                ref={(el) => {
-                                    this.imageRef = el;
-                                }}
-                                xlinkHref={this.props.meme.url}
+                                id="svg_ref"
+                                ref={(el) => { this.svgRef = el; }}
                                 height={newHeight}
                                 width={newWidth}
-                            />
-
-                            <text
-                                id="tiptoptext"
-                                style={{ ...textStyle, zIndex: this.state.isTopDragging ? 4 : 1 }}
-                                x={this.state.topX}
-                                y={this.state.topY}
-                                dominantBaseline="middle"
-                                textAnchor="middle"
-                                onMouseDown={(event) => this.handleMouseDown(event, "top")}
-                                onMouseUp={(event) => this.handleMouseUp(event, "top")}
                             >
-                                {this.state.toptext}
+                            <image
+                                    ref={(el) => {
+                                        this.imageRef = el;
+                                    }}
+                                    xlinkHref={this.props.meme.url}
+                                    height={newHeight}
+                                    width={newWidth}
+                            />
+                            <text
+                                    id="tiptoptext"
+                                    style={{ ...textStyle, zIndex: this.state.isTopDragging ? 4 : 1 }}
+                                    x={this.state.topX}
+                                    y={this.state.topY}
+                                    dominantBaseline="middle"
+                                    textAnchor="middle"
+                                    onMouseDown={(event) => this.handleMouseDown(event, "top")}
+                                    onMouseUp={(event) => this.handleMouseUp(event, "top")}
+                                >
+                                    {this.state.toptext}
                             </text>
 
                             <text
-                                id="bittybottomtext"
-                                style={textStyle}
-                                dominantBaseline="middle"
-                                textAnchor="middle"
-                                x={this.state.bottomX}
-                                y={this.state.bottomY}
-                                onMouseDown={(event) => this.handleMouseDown(event, "bottom")}
-                                onMouseUp={(event) => this.handleMouseUp(event, "bottom")}
-                            >
-                                {this.state.bottomtext}
+                                    id="bittybottomtext"
+                                    style={textStyle}
+                                    dominantBaseline="middle"
+                                    textAnchor="middle"
+                                    x={this.state.bottomX}
+                                    y={this.state.bottomY}
+                                    onMouseDown={(event) => this.handleMouseDown(event, "bottom")}
+                                    onMouseUp={(event) => this.handleMouseUp(event, "bottom")}
+                                >
+                                    {this.state.bottomtext}
                             </text>
                         </svg>
                         <div className="meme-form">

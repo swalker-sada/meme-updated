@@ -4,6 +4,7 @@ import TempGen from "./TempGen";
 import utils from './utils/utils';
 import {getMemes} from './utils/api';
 import MemeLikesService from './utils/tutorial.service';
+import TemplateNames from "./utils/templates.js";
 
 export default class App extends Component {
   state = {
@@ -85,13 +86,40 @@ export default class App extends Component {
       });
     });
 
+    /* fetch("https://api.imgflip.com/get_memes")
+      .then((r) => r.json())
+      .then((images) => {
+        this.setState({ images: images.data.memes.filter((i) => i.box_count === 2) });
+      });
+       */
 
-
-
+        var images = [];
+        TemplateNames.map((n) => {
+          return images.push ({
+            id: n.id,
+            name: n.id,
+            //url: n.blank,
+            url: "https://storage.cloud.google.com/sada-u/templates/"+ n.id + "/"  + n.imagefile,
+            width: 1200,
+            height: 1200,
+            box_count: 2
+          });
+        });
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * Math.floor(max));
+        }
+        images = images.filter((i) => i.box_count === 2);
+        var offset = getRandomInt(images.length - 11);
+        console.log('offset', offset);
+        images = images.slice(offset, offset + 8);
+        this.setState( { images: images});
+        
+   /*
     getMemes(sessionId)
       .then(data => {
             this.setState({ images: data.rows.filter((i) => i.box_count === 2) });
         });
+   */
    
   }
   
