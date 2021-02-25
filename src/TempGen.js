@@ -276,7 +276,7 @@ class TempGen extends Component {
                                     onMouseDown={(event) => this.handleMouseDown(event, "top")}
                                     onMouseUp={(event) => this.handleMouseUp(event, "top")}
                                 >
-                                    {this.state.toptext}
+                                    
                             </text>
 
                             <text
@@ -289,7 +289,7 @@ class TempGen extends Component {
                                     onMouseDown={(event) => this.handleMouseDown(event, "bottom")}
                                     onMouseUp={(event) => this.handleMouseUp(event, "bottom")}
                                 >
-                                    {this.state.bottomtext}
+                                    
                             </text>
                         </svg>
                         <div className="meme-form">
